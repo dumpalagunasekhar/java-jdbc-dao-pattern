@@ -1,0 +1,11 @@
+# Compiled files
+*.class
+
+# Environment variables
+.env
+
+# MySQL driver (don't upload jar)
+lib/
+
+# VS Code settings
+.vscode/
