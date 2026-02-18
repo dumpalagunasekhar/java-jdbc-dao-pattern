@@ -8,12 +8,11 @@ public class ApplicationDAO {
     try {
         Connection con = DBConnection.getConnection();
         PreparedStatement ps = con.prepareStatement(query);
-        ps.setString(1,company_name);
+        ps.setString(1, company_name);
         ps.setString(2, job_role);
-        ps.setDate(3,applied_date);
+        ps.setDate(3, applied_date);
         ps.setString(4, status);
-        ps.setString(5,reply);
-
+        ps.setString(5, reply);
         int rows = ps.executeUpdate();
 
         if(rows > 0){
