@@ -97,49 +97,47 @@ public class ApplicationDAO {
     }
     //this below method are for batch processing 
     public void addApplications(List<Application> apps){
-        
-       String query = """
-    INSERT INTO applications
-    (company_name, job_role, applied_date, status, reply)
-    VALUES (?, ?, ?, ?, ?)
-    """;
-
-        Connection con = null;
-        try {
-            con = DBConnection.getConnection();
-            con.setAutoCommit(false);
-            PreparedStatement ps = con.prepareStatement(query);
-            for(Application app : apps){
-                ps.setString(1,app.getCompant_Name());
-                ps.setString(2,app.getJob_Role());
-                ps.setDate(3, java.sql.Date.valueOf(app.getApplied_Date()));
-                ps.setString(4, app.getStatus());
-                ps.setString(5,app.getReply());
-                ps.addBatch();
-            }
-             ps.executeBatch();
-            con.commit();
-            System.out.println("Applications added Sucessfully");
-            }catch(Exception e){
-                try{
-                    if(con != null){
-                        con.rollback();
-                        System.out.println("Transcation is RolledBack");
-                    }
-                }catch(Exception ex){
-                        ex.printStackTrace();
-                    }
-                e.printStackTrace();
-            }finally{
-                try{
-                    if(con != null){
-                        con.setAutoCommit(true);
-                        con.close();
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
+        String query = """
+            INSERT INTO applications
+            (company_name, job_role, applied_date, status, reply)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+            Connection con = null;
+            try {
+                con = DBConnection.getConnection();
+                con.setAutoCommit(false);
+                PreparedStatement ps = con.prepareStatement(query);
+                for(Application app : apps){
+                    ps.setString(1,app.getCompant_Name());
+                    ps.setString(2,app.getJob_Role());
+                    ps.setDate(3, java.sql.Date.valueOf(app.getApplied_Date()));
+                    ps.setString(4, app.getStatus());
+                    ps.setString(5,app.getReply());
+                    ps.addBatch();
                 }
-            }
+                ps.executeBatch();
+                con.commit();
+                System.out.println("Applications added Sucessfully");
+                }catch(Exception e){
+                    try{
+                        if(con != null){
+                            con.rollback();
+                            System.out.println("Transcation is RolledBack");
+                        }
+                    }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+                    e.printStackTrace();
+                }finally{
+                    try{
+                        if(con != null){
+                            con.setAutoCommit(true);
+                            con.close();
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
     }
     // updating applications using batch processing 
     public void updateApplication(List<Application> apps){
